@@ -321,6 +321,7 @@ if __name__ == "__main__":
     parser.add_argument('-c24','--cloud-base-height-last24', action='store_true', help = 'Make plot of cloud base height for past 24 hours.')
     parser.add_argument('-a48','--aerosol-backscatter-last48', action='store_true', help = 'Make plot of aerosol backscatter for past 48 hours.')
     parser.add_argument('-c48','--cloud-base-height-last48', action='store_true', help = 'Make plot of cloud base height for past 48 hours.')
+    parser.add_argument('-i','--image-file', default = 'NCAS_national_centre_logo_transparent-768x184.png', help = 'logo image for plots.')
     args = parser.parse_args()
     
     
@@ -346,7 +347,7 @@ if __name__ == "__main__":
         msg = "Too many netCDF files for aerosol-backscatter"
         raise ValueError(msg)
     aerosol_dates = [ f.split('ncas-ceilometer-3')[1].split('_')[2] for f in aerosol_netcdfs ]
-    
+
     # Check no repeated dates
     if len(set(aerosol_dates)) != len(aerosol_dates):
         counter = Counter(aerosol_dates)
@@ -396,27 +397,27 @@ if __name__ == "__main__":
                 cbh_netcdf_ordered.append(f)
                 break
     
-    
+   
     # make the requested plots
     for i in given_args:
-        if i[0] not in  ['netCDFs', 'output_location']:
+        if i[0] not in  ['netCDFs', 'output_location', 'image_file']:
             if i[0] == 'aerosol_backscatter_today':
                 print('Making aerosol_backscatter_today')
-                aerosol_backscatter_today(aerosol_netcdf_ordered[0], output_location = args.output_location)
+                aerosol_backscatter_today(aerosol_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             elif i[0] == 'aerosol_backscatter_last24':
                 print('Making aerosol_backscatter_last24')
-                aerosol_backscatter_last24(aerosol_netcdf_ordered[1], aerosol_netcdf_ordered[0], output_location = args.output_location)
+                aerosol_backscatter_last24(aerosol_netcdf_ordered[1], aerosol_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             elif i[0] == 'aerosol_backscatter_last48':
                 print('Making aerosol_backscatter_last48')
-                aerosol_backscatter_last48(aerosol_netcdf_ordered[2], aerosol_netcdf_ordered[1], aerosol_netcdf_ordered[0], output_location = args.output_location)
+                aerosol_backscatter_last48(aerosol_netcdf_ordered[2], aerosol_netcdf_ordered[1], aerosol_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             elif i[0] == 'cloud_base_height_today':
                 print('Making cloud_base_height_today')
-                cloud_base_height_today(cbh_netcdf_ordered[0], output_location = args.output_location)
+                cloud_base_height_today(cbh_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             elif i[0] == 'cloud_base_height_last24':
                 print('Making cloud_base_height_last24')
-                cloud_base_height_last24(cbh_netcdf_ordered[1], cbh_netcdf_ordered[0], output_location = args.output_location)
+                cloud_base_height_last24(cbh_netcdf_ordered[1], cbh_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             elif i[0] == 'cloud_base_height_last48':
                 print('Making cloud_base_height_last48')
-                cloud_base_height_last48(cbh_netcdf_ordered[2], cbh_netcdf_ordered[1], cbh_netcdf_ordered[0], output_location = args.output_location)
+                cloud_base_height_last48(cbh_netcdf_ordered[2], cbh_netcdf_ordered[1], cbh_netcdf_ordered[0], output_location = args.output_location, image_file = args.image_file)
             else:
                 print(f'Unexpected option {i}, not sure how to deal with it, skipping... ')
